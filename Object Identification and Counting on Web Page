@@ -1,0 +1,132 @@
+Object Identification and Counting on Web Page
+Tool: Selenium WebDriver
+
+Aim: Write a program to identify and count the total number of objects present on a web page including links, images, buttons, and input elements. Display categorized counts.
+1. Create Maven Project
+1. Eclipse IDE Open कर.
+2. File → New → Project वर क्लिक कर.
+3. Maven → Maven Project निवड.
+4. Create a simple project निवड.
+5. Next वर क्लिक कर.
+खालील माहिती भर:
+Field	Value
+Group Id	com.stqa
+Artifact Id	Practical9
+Version	1.0-SNAPSHOT
+Packaging	jar
+
+6. Finish वर क्लिक कर.
+
+मराठी: Selenium WebDriver वापरून Web Page वरील Objects शोधण्यासाठी Maven Project तयार केले.
+2. Add Selenium Dependency
+pom.xml उघडून खालील Code टाक.
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.stqa</groupId>
+    <artifactId>Practical9</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <maven.compiler.release>17</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>4.51.0</version>
+        </dependency>
+    </dependencies>
+
+</project>
+
+
+
+मराठी स्पष्टीकरण:
+- Selenium Dependency Browser Automation साठी वापरली जाते.
+- Maven Project वर Right Click → Maven → Update Project → Force Update → OK.
+3. Create Package
+1. src/main/java वर Right Click कर.
+2. New → Package निवड.
+3. Package Name pract9 दे.
+4. Finish कर.
+4. Create Java Class
+1. pract9 Package वर Right Click कर.
+2. New → Class निवड.
+3. Class Name Test दे.
+4. public static void main(String[] args) निवड.
+5. Finish कर.
+तुझ्या फाइलमध्ये Package Name org.openqa.selenium.chrome दिले आहे. पण Selenium च्या स्वतःच्या Package मध्ये आपला Class तयार करणे योग्य नाही. म्हणून स्वतंत्र pract9 Package वापरला आहे.
+5. Complete Java Code
+Test.java मध्ये खालील Code टाक.
+
+package pract9;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import java.time.Duration;
+import java.util.List;
+
+public class Test {
+
+    public static void main(String[] args) {
+
+        // Launch Chrome browser
+        WebDriver driver = new ChromeDriver();
+
+        // Maximize browser window
+        driver.manage().window().maximize();
+
+        // Implicit wait
+        driver.manage().timeouts()
+              .implicitlyWait(Duration.ofSeconds(10));
+
+        // Open web page
+        driver.get("https://www.wikipedia.org");
+
+        // Identify elements
+        List<WebElement> links =
+            driver.findElements(By.tagName("a"));
+
+        List<WebElement> images =
+            driver.findElements(By.tagName("img"));
+
+        List<WebElement> buttons =
+            driver.findElements(By.tagName("button"));
+
+        List<WebElement> inputs =
+            driver.findElements(By.tagName("input"));
+
+        // Display counts
+        System.out.println("===== Object Count on Web Page =====");
+
+        System.out.println("Total Links : " + links.size());
+
+        System.out.println("Total Images : " + images.size());
+
+        System.out.println("Total Buttons : " + buttons.size());
+
+        System.out.println("Total Inputs : " + inputs.size());
+
+        // Total objects
+        int totalObjects =
+            links.size() + images.size()
+            + buttons.size() + inputs.size();
+
+        System.out.println("------------------------------------");
+
+        System.out.println("Total Objects : " + totalObjects);
+
+        // Close browser
+        driver.quit();
+    }
+}
