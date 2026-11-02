@@ -1,0 +1,94 @@
+1. AIM
+To perform web element interactions and synchronization handling using Selenium WebDriver.
+
+2. REQUIREMENTS
+- Eclipse IDE
+- Java 25
+- Maven Project
+- Selenium WebDriver 4.51.0
+- Google Chrome Browser
+
+3. Project तयार करणे
+1. Eclipse Open कर.
+2. File → New → Maven Project.
+3. Create a simple project निवडून Next कर.
+4. खालील Values भर.
+Field	Value
+Group Id	com.stqa
+Artifact Id	WebElementInteraction
+Version	0.0.1-SNAPSHOT
+Packaging	jar
+
+5. Finish कर.
+
+4. pom.xml Code
+जुना Code Delete करून हा Code Paste कर.
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.stqa</groupId>
+    <artifactId>WebElementInteraction</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+
+    <properties>
+        <maven.compiler.release>17</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>4.51.0</version>
+        </dependency>
+    </dependencies>
+
+</project>
+
+
+
+Save कर आणि Right Click → Maven → Update Project → OK कर.
+5. PROCEDURE – 7 Steps
+1. Eclipse मध्ये Maven Project तयार करा.
+2. Selenium WebDriver Dependency Add करा.
+3. Java Class ElementTest तयार करा.
+4. Chrome Browser Open करा.
+5. Website Open करून Textbox मध्ये Text Enter करा.
+6. Button Click करून Explicit Wait वापरून Result तपासा.
+7. Browser Close करा.
+6. Java Code – ElementTest.java
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import java.time.Duration;
+
+public class ElementTest {
+
+    public static void main(String[] args) {
+
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://the-internet.herokuapp.com/dynamic_loading/2");
+
+        driver.findElement(By.tagName("button")).click();
+
+        WebDriverWait wait = new WebDriverWait(
+            driver, Duration.ofSeconds(10));
+
+        WebElement result = wait.until(
+            ExpectedConditions.visibilityOfElementLocated(
+                By.id("finish")));
+
+        System.out.println(result.getText());
+
+        driver.quit();
+    }
+}
