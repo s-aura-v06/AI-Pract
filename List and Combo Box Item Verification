@@ -1,0 +1,124 @@
+List and Combo Box Item Verification
+Tool: Selenium WebDriver
+
+Aim: Automate the process of identifying a list or dropdown box on a web page and determine the total number of items. Validate default selected value and perform selection testing.
+1. Create Maven Project
+1. Eclipse IDE Open कर.
+2. File → New → Project वर क्लिक कर.
+3. Maven → Maven Project निवड.
+4. Create a simple project निवड.
+5. Next वर क्लिक कर.
+खालील माहिती भर:
+Field	Value
+Group Id	com.stqa
+Artifact Id	Practical10
+Version	1.0-SNAPSHOT
+Packaging	jar
+
+6. Finish वर क्लिक कर.
+
+मराठी: Dropdown मधील Items तपासण्यासाठी Maven Project तयार केले.
+2. Add Selenium Dependency
+pom.xml उघडून खालील Code टाक.
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.stqa</groupId>
+    <artifactId>Practical10</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <maven.compiler.release>17</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>4.51.0</version>
+        </dependency>
+    </dependencies>
+
+</project>
+
+
+
+मराठी स्पष्टीकरण:
+- Selenium Dependency Browser Automation साठी वापरली जाते.
+- Maven Project वर Right Click → Maven → Update Project → Force Update → OK.
+3. Create Package
+1. src/main/java वर Right Click कर.
+2. New → Package निवड.
+3. Package Name prct10 दे.
+4. Finish कर.
+4. Create Java Class
+1. prct10 Package वर Right Click कर.
+2. New → Class निवड.
+3. Class Name sample दे.
+4. public static void main(String[] args) निवड.
+5. Finish कर.
+5. Complete Java Code
+sample.java मध्ये खालील Code टाक.
+
+package prct10;
+
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.Select;
+
+public class sample {
+
+    public static void main(String[] args) {
+
+        // Launch Chrome
+        WebDriver driver = new ChromeDriver();
+
+        // Open the website
+        driver.get("https://demoqa.com/select-menu");
+
+        // Maximize the browser
+        driver.manage().window().maximize();
+
+        // Locate the dropdown
+        WebElement dropdown =
+            driver.findElement(By.id("oldSelectMenu"));
+
+        // Create Select object
+        Select select = new Select(dropdown);
+
+        // Count total items
+        List<WebElement> options = select.getOptions();
+
+        System.out.println("Total Items: " + options.size());
+
+        // Display all items
+        System.out.println("Dropdown Items:");
+
+        for (WebElement option : options) {
+            System.out.println(option.getText());
+        }
+
+        // Display default selected item
+        System.out.println("Default Selected: " +
+            select.getFirstSelectedOption().getText());
+
+        // Select an item
+        select.selectByVisibleText("Purple");
+
+        // Verify selected item
+        System.out.println("Selected Item: " +
+            select.getFirstSelectedOption().getText());
+
+        // Close the browser
+        driver.quit();
+    }
+}
