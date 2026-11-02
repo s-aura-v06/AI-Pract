@@ -1,0 +1,150 @@
+Data Extraction and Score Analysis
+Tool: Selenium WebDriver Automate (फाइलमध्ये दिलेले नाव)
+
+Aim: Automate extraction of student marks from a dynamic web table and determine the number of students scoring above 60. Compute total count and percentage.
+
+महत्त्वाची नोंद: तुझ्या फाइलमधील Code प्रत्यक्षात Selenium वापरत नाही. तो Excel File मधून Marks वाचतो आणि Analysis करतो. खाली आधी फाइलमधील Code प्रमाणे Practical दिले आहे.
+1. Create Maven Project
+1. Eclipse IDE Open कर.
+2. File → New → Project वर क्लिक कर.
+3. Maven → Maven Project निवड.
+4. Create a simple project निवड.
+5. Next वर क्लिक कर.
+6. खालील माहिती भर.
+Field	Value
+Group Id	com.stqa
+Artifact Id	Practical8
+Version	1.0-SNAPSHOT
+Packaging	jar
+
+7. Finish वर क्लिक कर.
+
+मराठी: Java मध्ये Excel Data Analysis करण्यासाठी Maven Project तयार केले.
+2. Add Dependencies
+pom.xml Open करून खालील Code टाक.
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.stqa</groupId>
+    <artifactId>Practical8</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <maven.compiler.release>17</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>5.3.0</version>
+        </dependency>
+    </dependencies>
+
+</project>
+
+
+
+मराठी स्पष्टीकरण:
+- Apache POI वापरून Excel File Read करता येते.
+- poi-ooxml ही .xlsx Excel File हाताळण्यासाठी वापरली जाते.
+- या Practical मधील दिलेल्या Code साठी Selenium Dependency आवश्यक नाही.
+Project वर Right Click → Maven → Update Project → Force Update → OK.
+3. Create Package
+1. src/main/java वर Right Click कर.
+2. New → Package निवड.
+3. Package Name pract8 दे.
+4. Finish कर.
+4. Create Java Class
+1. pract8 Package वर Right Click कर.
+2. New → Class निवड.
+3. Class Name demo1 दे.
+4. public static void main(String[] args) निवड.
+5. Finish कर.
+5. Create Excel File
+Excel Open करून खालील Data भर.
+Student Name	Marks
+Amit	75
+Rahul	55
+Priya	80
+Sneha	65
+Rohit	45
+Pooja	90
+Neha	50
+Karan	70
+Sagar	40
+Riya	85
+
+Excel File चे नाव DATA.xlsx ठेव.
+
+ती D:\DATA.xlsx येथे Save कर.
+
+मराठी: या Excel File मध्ये 10 विद्यार्थ्यांची नावे आणि Marks दिले आहेत. Program या Marks चे Analysis करणार आहे.
+6. Complete Java Code
+demo1.java मध्ये खालील Code टाक.
+
+package pract8;
+
+import java.io.FileInputStream;
+
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+public class demo1 {
+
+    public static void main(String[] args) throws Exception {
+
+        // Open Excel file
+        FileInputStream fis = new FileInputStream(
+            "D:\\DATA.xlsx"
+        );
+
+        Workbook workbook = new XSSFWorkbook(fis);
+
+        Sheet sheet = workbook.getSheetAt(0);
+
+        int totalStudents = 0;
+        int countAbove60 = 0;
+
+        // Read Excel rows
+        for (Row row : sheet) {
+
+            // Skip header row
+            if (row.getRowNum() == 0) {
+                continue;
+            }
+
+            totalStudents++;
+
+            // Marks column (2nd column)
+            int marks = (int) row.getCell(1)
+                         .getNumericCellValue();
+
+            if (marks > 60) {
+                countAbove60++;
+            }
+        }
+
+        // Calculate percentage
+        double percentage =
+            ((double) countAbove60 / totalStudents) * 100;
+
+        System.out.println("Total Students: " + totalStudents);
+
+        System.out.println(
+            "Students scoring above 60: " + countAbove60
+        );
+
+        System.out.println("Percentage: " + percentage + "%");
+
+        workbook.close();
+        fis.close();
+    }
+}
