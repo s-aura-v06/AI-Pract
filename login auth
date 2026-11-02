@@ -1,0 +1,121 @@
+Step 1: नवीन Maven Project तयार कर
+1. Eclipse Open कर.
+2. File → New → Maven Project वर Click कर.
+3. Create a simple project (skip archetype selection) ला Tick कर.
+4. Next वर Click कर.
+
+Step 2: Project Details भर
+Field	Value
+Group Id	com.stqa
+Artifact Id	LoginAutomation
+Version	0.0.1-SNAPSHOT
+Packaging	jar
+
+Finish वर Click कर.
+Step 3: pom.xml मध्ये Selenium Dependency टाक
+1. Project Explorer मधील LoginAutomation उघड.
+2. pom.xml वर Double Click कर.
+3. जुना पूर्ण Code Delete कर.
+4. खालील Code Paste कर.
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.stqa</groupId>
+    <artifactId>LoginAutomation</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+
+    <properties>
+        <maven.compiler.release>17</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>4.51.0</version>
+        </dependency>
+    </dependencies>
+
+</project>
+
+
+5. Ctrl + S दाब.
+
+Step 4: Maven Update कर
+1. LoginAutomation वर Right Click.
+2. Maven → Update Project.
+3. Force Update of Snapshots/Releases ला Tick.
+4. OK कर.
+5. Download पूर्ण होऊ दे.
+
+Step 5: Java Version सेट कर
+तुझ्याकडे Java 25 आहे, म्हणून:
+1. Project वर Right Click → Properties.
+2. Java Build Path → Libraries.
+3. JRE System Library → Edit.
+4. JavaSE-25 किंवा Installed Java 25 निवड.
+5. Apply and Close.
+त्यानंतर Java Compiler मध्ये:
+- Enable project specific settings Tick कर.
+- Compiler compliance level 25 निवड.
+- Apply and Close.
+
+Step 6: Java Class तयार कर
+1. src/main/java वर Right Click.
+2. New → Class निवड.
+3. Name: LoginTest
+4. Finish वर Click कर.
+
+Step 7: Java Code Paste कर
+LoginTest.java मध्ये हा Code Paste कर.
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class LoginTest {
+
+    public static void main(String[] args) {
+
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://the-internet.herokuapp.com/login");
+
+        driver.findElement(By.id("username"))
+              .sendKeys("tomsmith");
+
+        driver.findElement(By.id("password"))
+              .sendKeys("SuperSecretPassword!");
+
+        driver.findElement(By.className("radius"))
+              .click();
+
+        String message = driver.findElement(By.id("flash")).getText();
+
+        if (message.contains("You logged into a secure area!")) {
+            System.out.println("Login Successful");
+        } else {
+            System.out.println("Login Failed");
+        }
+
+        driver.quit();
+    }
+}
+
+
+
+Ctrl + S दाबून Save कर.
+Step 8: Practical Run कर
+1. LoginTest.java वर Right Click कर.
+2. Run As → Java Application निवड.
+3. Chrome Browser आपोआप Open होईल.
+4. Username आणि Password आपोआप भरले जातील.
+5. Login होईल आणि Browser बंद होईल.
+
+Expected Output
+Login Successful
